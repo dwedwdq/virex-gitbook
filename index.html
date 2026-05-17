@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Virex | Virex Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#03050d;
+  --bg3:rgba(10,16,35,0.72);
+  --bg4:rgba(15,24,50,0.82);
+  --accent:#2979ff;
+  --accent2:#00d4ff;
+  --accent3:#7c4dff;
+  --glow:rgba(41,121,255,0.22);
+  --border:rgba(41,121,255,0.18);
+  --border2:rgba(0,212,255,0.32);
+  --text:#ddeeff;
+  --text2:#7aa8cc;
+  --text3:#3d6080;
+  --danger:#ff4444;
+  --danger-bg:rgba(255,68,68,0.08);
+  --danger-border:rgba(255,68,68,0.25);
+  --sidebar-w:260px;
+  --header-h:56px;
+}
+html{font-size:15px;scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  overflow-x:hidden;
+}
+#galaxy{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;
+}
+body::before{
+  content:'';position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%,rgba(41,121,255,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 70%,rgba(124,77,255,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 50% 10%,rgba(0,212,255,0.05) 0%,transparent 50%);
+  pointer-events:none;
+}
+header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:var(--header-h);
+  background:rgba(3,5,13,0.78);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;
+  padding:0 20px;gap:14px;
+}
+.logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.vx-badge{
+  width:34px;height:34px;border-radius:8px;
+  background:linear-gradient(135deg,#0a1840,#0d2a70,#0a1840);
+  border:1px solid rgba(41,121,255,0.5);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;color:#fff;
+  box-shadow:0 0 14px rgba(41,121,255,0.35),inset 0 0 8px rgba(41,121,255,0.1);
+  flex-shrink:0;position:relative;overflow:hidden;
+}
+.vx-badge::after{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,0.06) 50%,transparent 60%);
+  animation:sheen 4s infinite;
+}
+@keyframes sheen{0%{transform:translateX(-100%) translateY(-100%)}50%,100%{transform:translateX(100%) translateY(100%)}}
+.logo-name{
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px;
+  color:#fff;letter-spacing:0.1em;
+  text-shadow:0 0 22px rgba(41,121,255,0.6);
+}
+.header-sep{width:1px;height:22px;background:var(--border);margin:0 2px}
+.space-selector{
+  display:flex;align-items:center;gap:7px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:6px 12px;
+  font-size:13px;color:var(--text2);cursor:pointer;flex-shrink:0;
+  backdrop-filter:blur(10px);transition:border-color .2s,box-shadow .2s;
+}
+.space-selector:hover{border-color:var(--border2);box-shadow:0 0 12px var(--glow)}
+.space-selector svg{width:14px;height:14px}
+.header-search{
+  flex:1;max-width:340px;
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:7px 12px;margin-left:auto;
+  color:var(--text3);font-size:13px;
+  backdrop-filter:blur(10px);
+  transition:border-color .2s,box-shadow .2s;cursor:text;
+}
+.header-search:hover{border-color:rgba(41,121,255,0.35);box-shadow:0 0 16px var(--glow)}
+.header-search svg{width:14px;height:14px;flex-shrink:0}
+.kbd{
+  margin-left:auto;background:rgba(3,5,13,0.8);
+  border:1px solid var(--border2);border-radius:4px;
+  padding:2px 7px;font-size:11px;color:var(--text3);
+  font-family:'DM Mono',monospace;
+}
+.header-glow-line{
+  position:absolute;bottom:-1px;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 0%,var(--accent3) 20%,var(--accent) 50%,var(--accent2) 80%,transparent 100%);
+  opacity:0.7;animation:hline 4s ease-in-out infinite alternate;
+}
+@keyframes hline{0%{opacity:0.3}100%{opacity:0.9}}
+.layout{
+  display:flex;margin-top:var(--header-h);
+  min-height:calc(100vh - var(--header-h));
+  position:relative;z-index:1;
+}
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  position:fixed;top:var(--header-h);left:0;bottom:0;
+  overflow-y:auto;
+  background:rgba(3,5,13,0.6);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-right:1px solid var(--border);
+  padding:20px 0 40px;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+  z-index:100;
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sidebar-section{margin-bottom:6px}
+.sidebar-label{
+  font-size:10.5px;font-weight:600;color:var(--text3);
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:10px 18px 5px;font-family:'Orbitron',sans-serif;
+}
+.sidebar-link{
+  display:flex;align-items:center;gap:9px;
+  padding:7px 18px;font-size:13px;color:var(--text2);
+  text-decoration:none;border-left:2px solid transparent;
+  transition:color .15s,background .15s,border-color .15s;
+  cursor:pointer;position:relative;
+}
+.sidebar-link:hover{color:var(--text);background:rgba(41,121,255,0.07);border-left-color:rgba(41,121,255,0.4)}
+.sidebar-link.active{color:#fff;background:rgba(41,121,255,0.12);border-left-color:var(--accent)}
+.sidebar-link.active::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,var(--accent2),transparent);opacity:0.5;
+}
+.sidebar-link svg{width:14px;height:14px;flex-shrink:0;opacity:0.6}
+.sidebar-link.active svg,.sidebar-link:hover svg{opacity:1}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;justify-content:center}
+.content{max-width:780px;width:100%;padding:52px 44px 100px}
+.breadcrumb{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--text3);margin-bottom:36px;
+  font-family:'DM Mono',monospace;letter-spacing:0.03em;
+}
+.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .15s}
+.breadcrumb a:hover{color:var(--accent2)}
+.breadcrumb svg{width:10px;height:10px;opacity:0.5}
+.page-title{
+  font-family:'Orbitron',sans-serif;font-size:36px;font-weight:900;
+  color:#fff;letter-spacing:0.04em;line-height:1.15;margin-bottom:14px;
+}
+.page-title .accent{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(41,121,255,0.5));
+}
+.page-subtitle{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:32px;max-width:540px}
+hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.callout{
+  display:flex;align-items:flex-start;gap:12px;
+  background:var(--danger-bg);
+  border:1px solid var(--danger-border);border-left:3px solid var(--danger);
+  border-radius:10px;padding:14px 16px;margin:24px 0;
+  font-size:13.5px;color:#ffaaaa;line-height:1.6;
+  backdrop-filter:blur(8px);
+}
+.callout svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;color:var(--danger)}
+.section-heading{
+  font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;
+  color:#fff;letter-spacing:0.05em;margin:36px 0 18px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-heading .hl{color:var(--accent2)}
+.section-heading::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,var(--border),transparent);margin-left:8px;
+}
+.guide-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:10px;margin-bottom:8px;
+}
+.guide-card{
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;padding:14px 15px;
+  text-decoration:none;color:var(--text);
+  font-size:13.5px;font-weight:500;
+  transition:all .2s;cursor:pointer;
+  backdrop-filter:blur(12px);
+  position:relative;overflow:hidden;
+}
+.guide-card::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(41,121,255,0.06),transparent);
+  transition:left .4s;
+}
+.guide-card:hover::before{left:100%}
+.guide-card:hover{
+  border-color:rgba(0,212,255,0.4);background:rgba(15,30,65,0.88);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(41,121,255,0.15),0 0 0 1px rgba(0,212,255,0.1);
+}
+.guide-icon{
+  width:32px;height:32px;flex-shrink:0;border-radius:7px;
+  background:rgba(41,121,255,0.1);border:1px solid rgba(41,121,255,0.2);
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.guide-icon svg{width:15px;height:15px;color:var(--accent2)}
+.guide-card:hover .guide-icon{
+  background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.4);
+  box-shadow:0 0 10px rgba(0,212,255,0.2);
+}
+.guide-card-text{line-height:1.3}
+.guide-card-name{font-size:13.5px;font-weight:600;color:var(--text)}
+.guide-card-sub{font-size:11.5px;color:var(--text3);font-weight:400;margin-top:3px}
+.page-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:64px;padding-top:24px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--text3);font-family:'DM Mono',monospace;
+}
+.page-footer a{color:var(--accent2);text-decoration:none}
+.page-footer a:hover{text-decoration:underline}
+.toc{position:fixed;top:calc(var(--header-h) + 40px);right:28px;width:160px;font-size:12px;z-index:50}
+.toc-label{
+  font-size:10px;font-weight:600;color:var(--text3);
+  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;
+  font-family:'Orbitron',sans-serif;
+}
+.toc-link{
+  display:block;padding:4px 0 4px 12px;
+  color:var(--text3);text-decoration:none;
+  border-left:1px solid var(--border);
+  transition:color .15s,border-color .15s;line-height:1.5;
+}
+.toc-link:hover{color:var(--text2);border-left-color:var(--border2)}
+.toc-link.active{color:var(--accent2);border-left-color:var(--accent)}
+@media(max-width:1200px){.toc{display:none}}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .main{margin-left:0}
+  .content{padding:32px 20px 60px}
+  .page-title{font-size:26px}
+}
+</style>
+</head>
+<body>
+<canvas id="galaxy"></canvas>
+<header>
+  <a class="logo-wrap" href="#">
+    <div class="vx-badge">VX</div>
+    <span class="logo-name">VIREX</span>
+  </a>
+  <div class="header-sep"></div>
+  <div class="space-selector">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+    All Guides
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+  </div>
+  <div class="header-search">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L13 13"/></svg>
+    Search docs...
+    <span class="kbd">⌘K</span>
+  </div>
+  <div class="header-glow-line"></div>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <a class="sidebar-link active" href="#">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8L8 2l6 6"/><path d="M4 6v7h3v-3h2v3h3V6"/></svg>
+        Welcome to Virex
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Game Guides</div>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Virex Perm</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Temp X</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Phantom Series</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Apex Paragon</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>DayZ Viper</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Marvel Ultimate</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Rust Ultimate</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Fortnite Ultimate</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>R6 Lite</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>R6 Full</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Valorant Ghost</a>
+      <a class="sidebar-link" href="#"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Battlefield 6 Oxide</a>
+    </div>
+  </nav>
+  <main class="main">
+    <article class="content">
+      <div class="breadcrumb">
+        <a href="#">virex</a>
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg>
+        welcome
+      </div>
+      <h1 class="page-title">Welcome to <span class="accent">Virex</span></h1>
+      <p class="page-subtitle">Here you can find all guides to our products. Use the dropdown menu at the top left to select the guide you need.</p>
+      <hr>
+      <div class="callout">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>
+        Follow guides properly and fully to ensure no common mistakes are made.
+      </div>
+      <h2 class="section-heading">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>
+        Our <span class="hl">Game Guides</span>
+      </h2>
+      <div class="guide-grid">
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Virex Perm</div><div class="guide-card-sub">Permanent cheat guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5"/><path d="M8 5v3l2 2"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Temp X</div><div class="guide-card-sub">Temporary access guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Phantom Series</div><div class="guide-card-sub">Fortnite, Rust, Apex, DBD</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Apex Paragon</div><div class="guide-card-sub">Apex Legends guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">DayZ Viper</div><div class="guide-card-sub">DayZ full guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Marvel Ultimate</div><div class="guide-card-sub">Marvel Rivals guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Rust Ultimate</div><div class="guide-card-sub">Rust private guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Fortnite Ultimate</div><div class="guide-card-sub">Fortnite private guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">R6 Lite</div><div class="guide-card-sub">Rainbow Six Lite</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">R6 Full</div><div class="guide-card-sub">Rainbow Six Full</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Valorant Ghost</div><div class="guide-card-sub">Valorant guide</div></div></a>
+        <a class="guide-card" href="#"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div class="guide-card-text"><div class="guide-card-name">Battlefield 6 Oxide</div><div class="guide-card-sub">BF6 guide</div></div></a>
+      </div>
+      <div class="page-footer">
+        <span>&copy; 2025 Virex. All rights reserved.</span>
+        <a href="#">Edit this page</a>
+      </div>
+    </article>
+  </main>
+  <aside class="toc">
+    <div class="toc-label">On this page</div>
+    <a class="toc-link active" href="#">Overview</a>
+    <a class="toc-link" href="#">Game Guides</a>
+  </aside>
+</div>
+<script>
+(function(){
+  const canvas=document.getElementById('galaxy');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+
+  // static background stars
+  const BG=[];
+  function seedBG(){
+    BG.length=0;
+    for(let i=0;i<280;i++) BG.push({
+      x:Math.random()*canvas.width,y:Math.random()*canvas.height,
+      r:Math.random()*1.1+0.15,
+      a:Math.random()*0.5+0.1,
+      sp:Math.random()*0.018+0.004,
+      ph:Math.random()*Math.PI*2,
+      hue:Math.random()<0.65?205+Math.random()*35:190+Math.random()*60
+    });
+  }
+  seedBG();window.addEventListener('resize',seedBG);
+
+  // falling stars
+  const COLS=[[41,121,255],[0,212,255],[80,140,255],[120,165,255],[200,220,255],[100,90,255]];
+  function spawn(){
+    const c=COLS[Math.floor(Math.random()*COLS.length)];
+    const spd=Math.random()*2.8+1.0;
+    const ang=Math.PI/2+(Math.random()-0.5)*0.35;
+    return{
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height*0.5-50,
+      vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,
+      len:Math.random()*90+35,
+      w:Math.random()*1.6+0.35,
+      a:Math.random()*0.65+0.3,
+      r:c[0],g:c[1],b:c[2],
+      tp:Math.random()*Math.PI*2,ts:Math.random()*0.025
+    };
+  }
+  const S=[];
+  for(let i=0;i<38;i++){const s=spawn();s.y=Math.random()*canvas.height;S.push(s)}
+
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // bg stars
+    for(const s of BG){
+      s.ph+=s.sp;
+      const a=s.a*(0.55+0.45*Math.sin(s.ph));
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${s.hue},80%,85%,${a})`;ctx.fill();
+    }
+
+    // falling stars
+    for(const s of S){
+      s.tp+=s.ts;
+      const al=s.a*(0.78+0.22*Math.sin(s.tp));
+      const ang=Math.atan2(s.vy,s.vx);
+      const tx=s.x-Math.cos(ang)*s.len, ty=s.y-Math.sin(ang)*s.len;
+      const g=ctx.createLinearGradient(tx,ty,s.x,s.y);
+      g.addColorStop(0,`rgba(${s.r},${s.g},${s.b},0)`);
+      g.addColorStop(0.65,`rgba(${s.r},${s.g},${s.b},${al*0.35})`);
+      g.addColorStop(1,`rgba(${s.r},${s.g},${s.b},${al})`);
+      ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);
+      ctx.strokeStyle=g;ctx.lineWidth=s.w;ctx.lineCap='round';ctx.stroke();
+      // head dot
+      ctx.beginPath();ctx.arc(s.x,s.y,s.w*1.3,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${s.r},${s.g},${s.b},${al})`;ctx.fill();
+      // soft glow
+      const gl=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.w*6);
+      gl.addColorStop(0,`rgba(${s.r},${s.g},${s.b},${al*0.35})`);
+      gl.addColorStop(1,`rgba(${s.r},${s.g},${s.b},0)`);
+      ctx.beginPath();ctx.arc(s.x,s.y,s.w*6,0,Math.PI*2);
+      ctx.fillStyle=gl;ctx.fill();
+      s.x+=s.vx;s.y+=s.vy;
+      if(s.y>canvas.height+30||s.x>canvas.width+30||s.x<-30) Object.assign(s,spawn());
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>
