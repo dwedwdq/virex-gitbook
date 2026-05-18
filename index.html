@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virex Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#03050d;--bg3:rgba(10,16,35,0.72);--bg4:rgba(15,24,50,0.82);
+  --accent:#2979ff;--accent2:#00d4ff;--accent3:#7c4dff;
+  --glow:rgba(41,121,255,0.22);--border:rgba(41,121,255,0.18);--border2:rgba(0,212,255,0.32);
+  --text:#ddeeff;--text2:#7aa8cc;--text3:#3d6080;
+  --danger:#ff4444;--danger-bg:rgba(255,68,68,0.08);--danger-border:rgba(255,68,68,0.25);
+  --success:#00e676;--success-bg:rgba(0,230,118,0.08);--success-border:rgba(0,230,118,0.25);
+  --warn:#ffab00;--warn-bg:rgba(255,171,0,0.08);--warn-border:rgba(255,171,0,0.25);
+  --sidebar-w:260px;--header-h:56px;
+}
+html{font-size:15px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+#galaxy{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;background:radial-gradient(ellipse 80% 50% at 20% 30%,rgba(41,121,255,0.07) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 70%,rgba(124,77,255,0.06) 0%,transparent 60%),radial-gradient(ellipse 40% 60% at 50% 10%,rgba(0,212,255,0.05) 0%,transparent 50%);pointer-events:none}
+header{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--header-h);background:rgba(3,5,13,0.78);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:14px}
+.logo-wrap{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;cursor:pointer}
+.vx-badge{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#0a1840,#0d2a70,#0a1840);border:1px solid rgba(41,121,255,0.5);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;font-size:12px;color:#fff;box-shadow:0 0 14px rgba(41,121,255,0.35),inset 0 0 8px rgba(41,121,255,0.1);flex-shrink:0;position:relative;overflow:hidden}
+.vx-badge::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent 40%,rgba(255,255,255,0.06) 50%,transparent 60%);animation:sheen 4s infinite}
+@keyframes sheen{0%{transform:translateX(-100%) translateY(-100%)}50%,100%{transform:translateX(100%) translateY(100%)}}
+.logo-name{font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px;color:#fff;letter-spacing:0.1em;text-shadow:0 0 22px rgba(41,121,255,0.6)}
+.header-sep{width:1px;height:22px;background:var(--border);margin:0 2px}
+.header-glow-line{position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--accent3) 20%,var(--accent) 50%,var(--accent2) 80%,transparent 100%);opacity:0.7;animation:hline 4s ease-in-out infinite alternate}
+@keyframes hline{0%{opacity:0.3}100%{opacity:0.9}}
+.layout{display:flex;margin-top:var(--header-h);min-height:calc(100vh - var(--header-h));position:relative;z-index:1}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:var(--header-h);left:0;bottom:0;overflow-y:auto;background:rgba(3,5,13,0.6);backdrop-filter:blur(20px);border-right:1px solid var(--border);padding:20px 0 40px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;z-index:100}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.sidebar-section{margin-bottom:6px}
+.sidebar-label{font-size:10.5px;font-weight:600;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;padding:10px 18px 5px;font-family:'Orbitron',sans-serif}
+.sidebar-link{display:flex;align-items:center;gap:9px;padding:7px 18px;font-size:13px;color:var(--text2);text-decoration:none;border-left:2px solid transparent;transition:color .15s,background .15s,border-color .15s;cursor:pointer;position:relative;user-select:none}
+.sidebar-link:hover{color:var(--text);background:rgba(41,121,255,0.07);border-left-color:rgba(41,121,255,0.4)}
+.sidebar-link.active{color:#fff;background:rgba(41,121,255,0.12);border-left-color:var(--accent)}
+.sidebar-link svg{width:14px;height:14px;flex-shrink:0;opacity:0.6}
+.sidebar-link.active svg,.sidebar-link:hover svg{opacity:1}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;justify-content:center}
+.page{display:none;max-width:780px;width:100%;padding:52px 44px 100px;animation:fadein .25s ease}
+.page.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);margin-bottom:36px;font-family:'DM Mono',monospace;letter-spacing:0.03em}
+.breadcrumb span{color:var(--text3)}
+.breadcrumb svg{width:10px;height:10px;opacity:0.5}
+.page-title{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:#fff;letter-spacing:0.04em;line-height:1.15;margin-bottom:14px}
+.page-title .accent{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 20px rgba(41,121,255,0.5))}
+.page-subtitle{font-size:15px;color:var(--text2);line-height:1.75;margin-bottom:32px;max-width:580px}
+hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+.callout{display:flex;align-items:flex-start;gap:12px;border-radius:10px;padding:14px 16px;margin:20px 0;font-size:13.5px;line-height:1.6;backdrop-filter:blur(8px)}
+.callout.danger{background:var(--danger-bg);border:1px solid var(--danger-border);border-left:3px solid var(--danger);color:#ffaaaa}
+.callout.danger svg{color:var(--danger)}
+.callout.success{background:var(--success-bg);border:1px solid var(--success-border);border-left:3px solid var(--success);color:#a7ffcb}
+.callout.success svg{color:var(--success)}
+.callout.warn{background:var(--warn-bg);border:1px solid var(--warn-border);border-left:3px solid var(--warn);color:#ffe082}
+.callout.warn svg{color:var(--warn)}
+.callout svg{width:16px;height:16px;flex-shrink:0;margin-top:2px}
+.section-heading{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:700;color:#fff;letter-spacing:0.05em;margin:36px 0 16px;display:flex;align-items:center;gap:10px}
+.section-heading .hl{color:var(--accent2)}
+.section-heading::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);margin-left:8px}
+/* STEPS */
+.steps{display:flex;flex-direction:column;gap:0;margin:20px 0}
+.step{display:flex;gap:16px;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:15px;top:36px;bottom:-4px;width:1px;background:linear-gradient(180deg,var(--accent),rgba(41,121,255,0.1))}
+.step-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,rgba(41,121,255,0.25),rgba(0,212,255,0.15));border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;color:var(--accent2);flex-shrink:0;margin-top:4px;box-shadow:0 0 10px rgba(41,121,255,0.2)}
+.step-body{flex:1;padding-bottom:24px}
+.step-title{font-weight:600;color:#fff;font-size:14.5px;margin-bottom:6px}
+.step-desc{color:var(--text2);font-size:13.5px;line-height:1.7}
+/* CODE */
+.code-block{background:rgba(3,5,13,0.9);border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin:12px 0;font-family:'DM Mono',monospace;font-size:12.5px;color:#a8d8ff;line-height:1.7;overflow-x:auto;position:relative}
+.code-block .comment{color:var(--text3)}
+.code-block .key{color:var(--accent2)}
+.code-label{font-size:11px;color:var(--text3);font-family:'Orbitron',sans-serif;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px}
+/* GUIDE GRID (home) */
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-bottom:8px}
+.guide-card{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 15px;text-decoration:none;color:var(--text);font-size:13.5px;font-weight:500;transition:all .2s;cursor:pointer;backdrop-filter:blur(12px);position:relative;overflow:hidden;user-select:none}
+.guide-card::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(41,121,255,0.06),transparent);transition:left .4s}
+.guide-card:hover::before{left:100%}
+.guide-card:hover{border-color:rgba(0,212,255,0.4);background:rgba(15,30,65,0.88);transform:translateY(-2px);box-shadow:0 8px 32px rgba(41,121,255,0.15),0 0 0 1px rgba(0,212,255,0.1)}
+.guide-icon{width:32px;height:32px;flex-shrink:0;border-radius:7px;background:rgba(41,121,255,0.1);border:1px solid rgba(41,121,255,0.2);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.guide-icon svg{width:15px;height:15px;color:var(--accent2)}
+.guide-card:hover .guide-icon{background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.4);box-shadow:0 0 10px rgba(0,212,255,0.2)}
+.guide-card-name{font-size:13.5px;font-weight:600;color:var(--text);line-height:1.3}
+.guide-card-sub{font-size:11.5px;color:var(--text3);font-weight:400;margin-top:3px}
+/* TAGS */
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.tag{padding:4px 12px;border-radius:20px;font-size:12px;font-family:'DM Mono',monospace;border:1px solid}
+.tag.blue{color:var(--accent2);border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.07)}
+.tag.green{color:var(--success);border-color:rgba(0,230,118,0.3);background:rgba(0,230,118,0.07)}
+.tag.red{color:var(--danger);border-color:rgba(255,68,68,0.3);background:rgba(255,68,68,0.07)}
+.tag.orange{color:var(--warn);border-color:rgba(255,171,0,0.3);background:rgba(255,171,0,0.07)}
+/* PAGE FOOTER */
+.page-footer{display:flex;align-items:center;justify-content:space-between;margin-top:64px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-size:13px;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px);margin-bottom:32px;user-select:none}
+.back-btn:hover{border-color:var(--border2);color:var(--text);box-shadow:0 0 12px var(--glow)}
+.back-btn svg{width:14px;height:14px}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.page{padding:32px 20px 60px}.page-title{font-size:24px}}
+</style>
+</head>
+<body>
+<canvas id="galaxy"></canvas>
+
+<header>
+  <div class="logo-wrap" onclick="navigate('home')">
+    <div class="vx-badge">VX</div>
+    <span class="logo-name">VIREX</span>
+  </div>
+  <div class="header-sep"></div>
+  <div class="header-glow-line"></div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <div class="sidebar-link active" onclick="navigate('home')" id="nav-home">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8L8 2l6 6"/><path d="M4 6v7h3v-3h2v3h3V6"/></svg>
+        Welcome to Virex
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Game Guides</div>
+      <div class="sidebar-link" onclick="navigate('perm')" id="nav-perm"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Virex Perm</div>
+      <div class="sidebar-link" onclick="navigate('tempx')" id="nav-tempx"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Temp X</div>
+      <div class="sidebar-link" onclick="navigate('phantom')" id="nav-phantom"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Phantom Series</div>
+      <div class="sidebar-link" onclick="navigate('apex')" id="nav-apex"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Apex Paragon</div>
+      <div class="sidebar-link" onclick="navigate('dayz')" id="nav-dayz"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>DayZ Viper</div>
+      <div class="sidebar-link" onclick="navigate('marvel')" id="nav-marvel"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Marvel Ultimate</div>
+      <div class="sidebar-link" onclick="navigate('rust')" id="nav-rust"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Rust Ultimate</div>
+      <div class="sidebar-link" onclick="navigate('fortnite')" id="nav-fortnite"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Fortnite Ultimate</div>
+      <div class="sidebar-link" onclick="navigate('r6lite')" id="nav-r6lite"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>R6 Lite</div>
+      <div class="sidebar-link" onclick="navigate('r6full')" id="nav-r6full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>R6 Full</div>
+      <div class="sidebar-link" onclick="navigate('valorant')" id="nav-valorant"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Valorant Ghost</div>
+      <div class="sidebar-link" onclick="navigate('bf6')" id="nav-bf6"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Battlefield 6 Oxide</div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>welcome</span></div>
+      <h1 class="page-title">Welcome to <span class="accent">Virex</span></h1>
+      <p class="page-subtitle">Here you can find all guides to our products. Click any guide below or use the sidebar to get started.</p>
+      <hr>
+      <div class="callout danger">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>
+        Follow guides properly and fully to ensure no common mistakes are made.
+      </div>
+      <h2 class="section-heading"><svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="14" height="9" rx="2"/><path d="M5 8h2m-1-1v2"/><circle cx="10" cy="7.5" r=".5" fill="currentColor"/><circle cx="12" cy="9.5" r=".5" fill="currentColor"/></svg>Our <span class="hl">Game Guides</span></h2>
+      <div class="guide-grid">
+        <div class="guide-card" onclick="navigate('perm')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Virex Perm</div><div class="guide-card-sub">Permanent cheat guide</div></div></div>
+        <div class="guide-card" onclick="navigate('tempx')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5"/><path d="M8 5v3l2 2"/></svg></div><div><div class="guide-card-name">Temp X</div><div class="guide-card-sub">Temporary access guide</div></div></div>
+        <div class="guide-card" onclick="navigate('phantom')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Phantom Series</div><div class="guide-card-sub">Fortnite, Rust, Apex, DBD</div></div></div>
+        <div class="guide-card" onclick="navigate('apex')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Apex Paragon</div><div class="guide-card-sub">Apex Legends guide</div></div></div>
+        <div class="guide-card" onclick="navigate('dayz')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">DayZ Viper</div><div class="guide-card-sub">DayZ full guide</div></div></div>
+        <div class="guide-card" onclick="navigate('marvel')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Marvel Ultimate</div><div class="guide-card-sub">Marvel Rivals guide</div></div></div>
+        <div class="guide-card" onclick="navigate('rust')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Rust Ultimate</div><div class="guide-card-sub">Rust private guide</div></div></div>
+        <div class="guide-card" onclick="navigate('fortnite')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Fortnite Ultimate</div><div class="guide-card-sub">Fortnite private guide</div></div></div>
+        <div class="guide-card" onclick="navigate('r6lite')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">R6 Lite</div><div class="guide-card-sub">Rainbow Six Lite</div></div></div>
+        <div class="guide-card" onclick="navigate('r6full')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">R6 Full</div><div class="guide-card-sub">Rainbow Six Full</div></div></div>
+        <div class="guide-card" onclick="navigate('valorant')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Valorant Ghost</div><div class="guide-card-sub">Valorant guide</div></div></div>
+        <div class="guide-card" onclick="navigate('bf6')"><div class="guide-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l1.5 3 3.5.5-2.5 2.5.6 3.5L8 10l-3.1 1.5.6-3.5L3 5.5l3.5-.5z"/></svg></div><div><div class="guide-card-name">Battlefield 6 Oxide</div><div class="guide-card-sub">BF6 guide</div></div></div>
+      </div>
+      <div class="page-footer"><span>&copy; 2025 Virex. All rights reserved.</span></div>
+    </div>
+
+    <!-- VIREX PERM -->
+    <div class="page" id="page-perm">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>virex perm</span></div>
+      <h1 class="page-title"><span class="accent">Virex Perm</span></h1>
+      <p class="page-subtitle">Permanent undetected cheat for supported games. Follow every step exactly — skipping steps causes crashes or detection.</p>
+      <div class="tags"><span class="tag green">Undetected</span><span class="tag blue">Permanent License</span><span class="tag orange">Admin Required</span></div>
+      <hr>
+      <div class="callout danger"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>Disable ALL antivirus software and Windows Defender before starting. Add your cheat folder to exclusions permanently.</div>
+      <h2 class="section-heading">Requirements</h2>
+      <div class="callout warn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l6 12H2z"/><path d="M8 7v3"/><circle cx="8" cy="12" r=".5" fill="currentColor" stroke="none"/></svg>Windows 10/11 (22H2+) &bull; Secure Boot OFF &bull; TPM disabled in BIOS &bull; .NET 6.0 Runtime installed &bull; Game must be closed during injection</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Disable Secure Boot & TPM</div><div class="step-desc">Reboot into BIOS (usually DEL or F2 on startup). Navigate to Security → Secure Boot → Disable. Also disable TPM 2.0. Save and exit. This is required for the driver to load.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Disable Windows Defender & Antivirus</div><div class="step-desc">Go to Windows Security → Virus & threat protection → Manage settings → Turn off Real-time protection. Then add your Virex folder to exclusions so it stays off after reboot.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Extract & Place Files</div><div class="step-desc">Extract the Virex Perm ZIP to a simple path like <code>C:\Virex\</code>. Do not use Desktop or Downloads. Avoid paths with spaces or special characters.</div>
+          <div class="code-label">Recommended path</div>
+          <div class="code-block">C:\Virex\Perm\</div>
+        </div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Run Loader as Administrator</div><div class="step-desc">Right-click <strong>VirexLoader.exe</strong> → Run as administrator. Enter your license key when prompted. The loader will verify your key online.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Inject & Launch Game</div><div class="step-desc">After the loader shows <strong style="color:#00e676">READY</strong>, launch your game. Wait for the game to fully load into the main menu, then press the inject hotkey.</div>
+          <div class="code-label">Default hotkey</div>
+          <div class="code-block"><span class="key">INSERT</span> <span class="comment">— Open/Close menu</span><br><span class="key">DELETE</span> <span class="comment">— Panic unload</span></div>
+        </div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Configure Settings</div><div class="step-desc">Use the in-game overlay menu to configure aimbot, ESP, and other features. Save your config so it loads automatically next time.</div></div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Setup complete. If you see the Virex overlay menu in-game, everything is working correctly.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- TEMP X -->
+    <div class="page" id="page-tempx">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>temp x</span></div>
+      <h1 class="page-title"><span class="accent">Temp X</span></h1>
+      <p class="page-subtitle">Temporary subscription-based cheat. Resets daily — must re-inject each session. Lighter footprint, faster setup.</p>
+      <div class="tags"><span class="tag green">Undetected</span><span class="tag orange">Daily Reset</span><span class="tag blue">Subscription</span></div>
+      <hr>
+      <div class="callout danger"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>Temp X expires at midnight UTC daily. You must re-run the loader every session. Do not share your key.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Download Temp X Loader</div><div class="step-desc">Download the latest TempX loader from your dashboard. The file changes with each update — always use the newest version.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Disable Antivirus</div><div class="step-desc">Temporarily disable Windows Defender real-time protection. Add the loader file to exclusions. Temp X uses a different injection method that is more aggressive against AV.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Run Loader & Enter Key</div><div class="step-desc">Run <strong>TempX.exe</strong> as administrator. Enter your subscription key. The loader checks validity in real time — you need an active internet connection.</div>
+          <div class="code-label">Status indicators</div>
+          <div class="code-block"><span class="key">GREEN</span>  <span class="comment">— Key valid, ready to inject</span><br><span class="key">YELLOW</span> <span class="comment">— Connecting to server</span><br><span class="key">RED</span>    <span class="comment">— Key expired or invalid</span></div>
+        </div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Launch Game & Inject</div><div class="step-desc">Start your game and wait for the main menu. Click <strong>Inject</strong> in the loader. The overlay will appear within 5–10 seconds.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Daily Renewal</div><div class="step-desc">After midnight UTC, close the game and re-run the loader. Your key stays valid as long as your subscription is active. Check your dashboard for renewal date.</div></div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Temp X is now active. Enjoy your session!</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- PHANTOM SERIES -->
+    <div class="page" id="page-phantom">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>phantom series</span></div>
+      <h1 class="page-title"><span class="accent">Phantom Series</span></h1>
+      <p class="page-subtitle">One loader — four games. Supports Fortnite, Rust, Apex Legends, and Dead by Daylight. Select your game inside the loader.</p>
+      <div class="tags"><span class="tag green">Multi-Game</span><span class="tag blue">Fortnite</span><span class="tag blue">Rust</span><span class="tag blue">Apex</span><span class="tag blue">DBD</span></div>
+      <hr>
+      <div class="callout warn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l6 12H2z"/><path d="M8 7v3"/><circle cx="8" cy="12" r=".5" fill="currentColor" stroke="none"/></svg>Only inject for ONE game per session. Running multiple games simultaneously with Phantom will cause crashes.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Prepare System</div><div class="step-desc">Disable antivirus, Secure Boot, and ensure you are running Windows as administrator. Phantom requires kernel-level access.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Run Phantom Loader</div><div class="step-desc">Launch <strong>PhantomLoader.exe</strong> as administrator. Log in with your Virex credentials (email + license key). The loader will show all games your license covers.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Select Your Game</div><div class="step-desc">Click the game you want to play. The loader loads the correct module for that game automatically.</div>
+          <div class="code-label">Supported games</div>
+          <div class="code-block"><span class="key">FORTNITE</span>    <span class="comment">— Aimbot, ESP, BuildHelper</span><br><span class="key">RUST</span>         <span class="comment">— Aimbot, ESP, NoRecoil</span><br><span class="key">APEX LEGENDS</span> <span class="comment">— Aimbot, Wallhack, Radar</span><br><span class="key">DEAD BY DAY.</span> <span class="comment">— Survivor/Killer ESP</span></div>
+        </div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Launch Game & Wait</div><div class="step-desc">Launch the selected game. Do not alt-tab during startup. Wait until you're in the lobby/main menu before interacting with the cheat.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Open Overlay & Configure</div><div class="step-desc">Press <strong>INSERT</strong> to open the Phantom overlay. Configure your settings per game. Each game profile is saved separately.</div></div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Phantom Series loaded successfully. Switch games anytime by restarting the loader.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- APEX -->
+    <div class="page" id="page-apex">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>apex paragon</span></div>
+      <h1 class="page-title"><span class="accent">Apex Paragon</span></h1>
+      <p class="page-subtitle">Premium Apex Legends cheat with advanced aimbot, ESP, and radar. Kernel-level bypass for EAC (Easy Anti-Cheat).</p>
+      <div class="tags"><span class="tag green">EAC Bypass</span><span class="tag blue">Aimbot</span><span class="tag blue">ESP</span><span class="tag orange">Kernel Driver</span></div>
+      <hr>
+      <div class="callout danger"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>Apex Paragon uses a kernel driver. Secure Boot MUST be disabled. If your PC blue-screens, boot into safe mode and uninstall the driver manually.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Disable Secure Boot in BIOS</div><div class="step-desc">Required for kernel driver. Reboot → BIOS → Security → Secure Boot → Disabled. Save and restart.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Install Visual C++ Redistributables</div><div class="step-desc">Download and install both x64 and x86 versions of Visual C++ 2015–2022 from Microsoft. The driver depends on these.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Run ApexParagon.exe as Admin</div><div class="step-desc">Open the loader with admin rights. Input your key. The loader will install the kernel driver silently — this takes about 10 seconds.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Launch Apex Legends</div><div class="step-desc">Start Apex via Steam or EA App. Wait until you reach the lobby screen. Do NOT launch through a third-party launcher.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Configure Aimbot & ESP</div><div class="step-desc">Press INSERT to open the menu. Recommended starting config:</div>
+          <div class="code-label">Recommended config</div>
+          <div class="code-block"><span class="key">Aimbot FOV</span>     = 80<br><span class="key">Smoothness</span>     = 6<br><span class="key">Target Bone</span>   = Head / Chest (toggle)<br><span class="key">ESP Distance</span>  = 300m<br><span class="key">Radar</span>         = ON</div>
+        </div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Apex Paragon is active. Adjust smoothness to avoid obvious movement patterns.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- DAYZ -->
+    <div class="page" id="page-dayz">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>dayz viper</span></div>
+      <h1 class="page-title"><span class="accent">DayZ Viper</span></h1>
+      <p class="page-subtitle">Feature-rich DayZ cheat. ESP for players, zombies & loot. Fully external — no injection into the game process.</p>
+      <div class="tags"><span class="tag green">External</span><span class="tag blue">Player ESP</span><span class="tag blue">Loot ESP</span><span class="tag green">BattlEye Safe</span></div>
+      <hr>
+      <div class="callout warn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l6 12H2z"/><path d="M8 7v3"/><circle cx="8" cy="12" r=".5" fill="currentColor" stroke="none"/></svg>DayZ Viper is external — it reads game memory from outside. This makes it safer but requires the game to be running before launching the cheat.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Launch DayZ First</div><div class="step-desc">Start DayZ via Steam normally. Wait until you are fully in a server (character spawned). Do not open Viper before this.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Run DayZViper.exe</div><div class="step-desc">Open the Viper executable as administrator. It will auto-detect the running DayZ process. You'll see the process name and PID confirmed in the loader window.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter License Key</div><div class="step-desc">Paste your key into the loader. An internet connection is required for validation. Status turns green when authenticated.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Configure ESP</div><div class="step-desc">The overlay renders on top of DayZ. Use the keybinds to toggle features:</div>
+          <div class="code-label">Default keybinds</div>
+          <div class="code-block"><span class="key">F1</span> <span class="comment">— Toggle Player ESP</span><br><span class="key">F2</span> <span class="comment">— Toggle Zombie ESP</span><br><span class="key">F3</span> <span class="comment">— Toggle Loot ESP</span><br><span class="key">F4</span> <span class="comment">— Toggle Vehicles</span><br><span class="key">INSERT</span> <span class="comment">— Open full config menu</span></div>
+        </div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Loot Filter Setup</div><div class="step-desc">In the config menu under Loot ESP, set your item whitelist. Only whitelisted items will show on screen to avoid clutter. Common picks: AKM, M4A1, plates, food.</div></div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>DayZ Viper running. ESP overlay is active and reading game memory.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- MARVEL -->
+    <div class="page" id="page-marvel">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>marvel ultimate</span></div>
+      <h1 class="page-title"><span class="accent">Marvel Ultimate</span></h1>
+      <p class="page-subtitle">Marvel Rivals cheat with aimbot, wallhack, and hero-specific features. Works on all game modes.</p>
+      <div class="tags"><span class="tag green">Undetected</span><span class="tag blue">Aimbot</span><span class="tag blue">Wallhack</span><span class="tag blue">Hero Features</span></div>
+      <hr>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Disable Antivirus & Defender</div><div class="step-desc">Add the Marvel Ultimate folder to Windows Defender exclusions before extracting the files.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Run Loader as Administrator</div><div class="step-desc">Launch <strong>MarvelUltimate.exe</strong> with admin rights. Enter your license key and wait for the "Verified" status.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Start Marvel Rivals</div><div class="step-desc">Launch Marvel Rivals via its launcher. Wait until you're in the main menu — do not queue yet.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Inject & Configure</div><div class="step-desc">Click Inject in the loader. Once injected, press INSERT in-game for the menu.</div>
+          <div class="code-label">Recommended settings</div>
+          <div class="code-block"><span class="key">Aimbot FOV</span>   = 70<br><span class="key">Target</span>       = Nearest / Lowest HP<br><span class="key">Wallhack</span>     = ON (box + health)<br><span class="key">Hero Abilities</span> = Per-hero (see submenu)</div>
+        </div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Queue & Play</div><div class="step-desc">Queue for your preferred mode. Hero-specific features activate automatically when you pick a hero. Check the Hero Features submenu for your hero's special options.</div></div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Marvel Ultimate active. Enjoy your match!</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- RUST -->
+    <div class="page" id="page-rust">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>rust ultimate</span></div>
+      <h1 class="page-title"><span class="accent">Rust Ultimate</span></h1>
+      <p class="page-subtitle">Full-featured Rust private cheat. Aimbot, silent aim, ESP, no-recoil script, and raid tools. EAC kernel bypass included.</p>
+      <div class="tags"><span class="tag green">EAC Bypass</span><span class="tag blue">Silent Aim</span><span class="tag blue">No Recoil</span><span class="tag orange">Kernel Driver</span></div>
+      <hr>
+      <div class="callout danger"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>Rust Ultimate requires Secure Boot OFF. The EAC kernel bypass will fail with Secure Boot enabled and may cause a BSOD.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Disable Secure Boot</div><div class="step-desc">BIOS → Security → Secure Boot → Disabled. This is mandatory for the EAC kernel bypass driver.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Extract to C:\Virex\Rust\</div><div class="step-desc">Use a simple path. Whitelist the entire folder in Windows Defender before extraction.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Run RustUltimate.exe as Admin</div><div class="step-desc">The loader installs the EAC bypass driver. This takes 15–20 seconds. Do not close the loader window during this step.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Launch Rust via Steam</div><div class="step-desc">Open Rust normally. Wait until the game finishes loading and you are in the main menu or connected to a server.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Inject & Configure</div><div class="step-desc">Press Inject. Open the menu with INSERT and configure:</div>
+          <div class="code-label">Recommended config</div>
+          <div class="code-block"><span class="key">Silent Aim</span>   = ON (smoothness: 5)<br><span class="key">No Recoil</span>    = ON (scale: 100%)<br><span class="key">Player ESP</span>   = Box + Name + Distance<br><span class="key">Raid ESP</span>     = TC, Doors, Traps<br><span class="key">Stash Finder</span> = ON</div>
+        </div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Rust Ultimate is active. Good luck on the server!</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- FORTNITE -->
+    <div class="page" id="page-fortnite">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>fortnite ultimate</span></div>
+      <h1 class="page-title"><span class="accent">Fortnite Ultimate</span></h1>
+      <p class="page-subtitle">Private Fortnite cheat. Aimbot, ESP, build-helper, and instant edit. Bypasses BattlEye with an external memory reading approach.</p>
+      <div class="tags"><span class="tag green">BattlEye Bypass</span><span class="tag blue">Aimbot</span><span class="tag blue">Build Helper</span><span class="tag blue">Instant Edit</span></div>
+      <hr>
+      <div class="callout warn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l6 12H2z"/><path d="M8 7v3"/><circle cx="8" cy="12" r=".5" fill="currentColor" stroke="none"/></svg>Always update Fortnite before using. If Epic pushed a game update, wait for a Virex update before injecting — outdated offsets cause crashes.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Update Fortnite</div><div class="step-desc">Make sure Fortnite is fully updated via the Epic Games Launcher. Check the Virex Discord/status page to confirm current version is supported.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Whitelist & Extract</div><div class="step-desc">Add <code>C:\Virex\Fortnite\</code> to Windows Defender exclusions. Extract the ZIP there.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Launch Fortnite First</div><div class="step-desc">Open Fortnite through Epic Games Launcher. Wait until you are in the lobby. Then run the Virex loader.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Run VirexFN.exe & Inject</div><div class="step-desc">Open loader as admin, enter key, click Inject. The overlay appears in-game.</div>
+          <div class="code-label">Key features config</div>
+          <div class="code-block"><span class="key">Aimbot FOV</span>     = 60–90<br><span class="key">Bone Priority</span>  = Head → Chest<br><span class="key">Build Helper</span>   = Auto-wall ON<br><span class="key">Instant Edit</span>   = ON<br><span class="key">Player ESP</span>     = Box + Health + Shield</div>
+        </div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Drop & Play</div><div class="step-desc">Queue for any mode. The aimbot activates when you ADS or fire. Build helper activates automatically when you enter build mode.</div></div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Fortnite Ultimate active. Check for updates after every Fortnite patch.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- R6 LITE -->
+    <div class="page" id="page-r6lite">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>r6 lite</span></div>
+      <h1 class="page-title"><span class="accent">R6 Lite</span></h1>
+      <p class="page-subtitle">Entry-level Rainbow Six Siege cheat. ESP, no-recoil, and operator info. Lightweight and fast setup.</p>
+      <div class="tags"><span class="tag green">Lightweight</span><span class="tag blue">ESP</span><span class="tag blue">No Recoil</span><span class="tag blue">Op Info</span></div>
+      <hr>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Disable Antivirus & Extract</div><div class="step-desc">Whitelist the R6 Lite folder in Defender. Extract to <code>C:\Virex\R6Lite\</code>.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Launch Siege</div><div class="step-desc">Open Rainbow Six Siege via Ubisoft Connect. Wait for the main menu to fully load.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Run R6Lite.exe as Admin</div><div class="step-desc">Enter your license key. The loader will detect the Siege process automatically.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Inject & Configure</div><div class="step-desc">Click Inject. Press INSERT for the menu.</div>
+          <div class="code-label">Lite features</div>
+          <div class="code-block"><span class="key">Player ESP</span>   = Box + Name + HP<br><span class="key">No Recoil</span>    = ON<br><span class="key">Op Info</span>      = Operator + Gadget shown<br><span class="key">Bomb ESP</span>     = ON</div>
+        </div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>R6 Lite is active. Upgrade to R6 Full for aimbot and advanced features.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- R6 FULL -->
+    <div class="page" id="page-r6full">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>r6 full</span></div>
+      <h1 class="page-title"><span class="accent">R6 Full</span></h1>
+      <p class="page-subtitle">Full Rainbow Six Siege package. Aimbot, ESP, no-recoil, rapid fire, operator ESP, and bomb/defuser info. Kernel-level BattlEye bypass.</p>
+      <div class="tags"><span class="tag green">BattlEye Bypass</span><span class="tag blue">Aimbot</span><span class="tag blue">Full ESP</span><span class="tag orange">Kernel</span></div>
+      <hr>
+      <div class="callout danger"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>Secure Boot must be OFF. R6 Full uses a kernel driver for the BattlEye bypass. Blue-screen on boot = Secure Boot is still enabled.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Disable Secure Boot</div><div class="step-desc">BIOS → Secure Boot → Disabled. Required for the BattlEye kernel bypass.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Whitelist & Extract</div><div class="step-desc">Add <code>C:\Virex\R6Full\</code> to Defender exclusions, then extract there.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Run Loader & Install Driver</div><div class="step-desc">Run <strong>R6Full.exe</strong> as admin. Driver installation takes 10–15 seconds. Do not interrupt.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Launch Siege & Inject</div><div class="step-desc">Open Siege via Ubisoft Connect. Once in the main menu, click Inject in the loader.</div>
+          <div class="code-label">Full feature config</div>
+          <div class="code-block"><span class="key">Aimbot</span>       = ON (FOV 70, smooth 5)<br><span class="key">Rapid Fire</span>   = ON (per-weapon toggle)<br><span class="key">No Recoil</span>    = 100%<br><span class="key">Op ESP</span>       = Operator + Gadget + HP<br><span class="key">Bomb ESP</span>     = Bomb + Defuser + Timer<br><span class="key">Wallbang</span>     = Penetration indicator</div>
+        </div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>R6 Full is active. All features available.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- VALORANT -->
+    <div class="page" id="page-valorant">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>valorant ghost</span></div>
+      <h1 class="page-title"><span class="accent">Valorant Ghost</span></h1>
+      <p class="page-subtitle">Vanguard-bypassing Valorant cheat. Aimbot, ESP, and agent abilities awareness. Hardware-spoofed to avoid hardware bans.</p>
+      <div class="tags"><span class="tag green">Vanguard Bypass</span><span class="tag blue">Aimbot</span><span class="tag blue">ESP</span><span class="tag orange">HWID Spoof</span></div>
+      <hr>
+      <div class="callout danger"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11" r=".5" fill="currentColor" stroke="none"/></svg>Valorant Ghost requires a full PC restart after running the spoofer step. Do not skip — Vanguard checks hardware signatures on boot.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Run HWID Spoofer First</div><div class="step-desc">Before anything else, run <strong>VirexSpoofer.exe</strong> as admin. Click Spoof, wait for completion, then fully restart your PC. This protects against hardware bans.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Disable Antivirus</div><div class="step-desc">After reboot, disable Defender and whitelist <code>C:\Virex\Valorant\</code> before extracting files.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Run ValorantGhost.exe</div><div class="step-desc">Open the loader as administrator. Enter your key. The loader will wait for Valorant's Vanguard to initialize.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Launch Valorant</div><div class="step-desc">Start Valorant normally. The loader will inject automatically after Vanguard finishes loading — this can take 30–60 seconds.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Configure In-Game</div><div class="step-desc">Press INSERT for the menu once in the main menu or a match.</div>
+          <div class="code-label">Recommended config</div>
+          <div class="code-block"><span class="key">Aimbot FOV</span>   = 65<br><span class="key">Target Bone</span>  = Head (with fallback: chest)<br><span class="key">Smoothness</span>   = 8 (keep high to avoid VAC flags)<br><span class="key">Player ESP</span>   = Box + HP + Agent name<br><span class="key">Util ESP</span>     = Grenades, smokes, trips</div>
+        </div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>Valorant Ghost active. Keep smoothness high to stay under Vanguard's behavior analysis.</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+    <!-- BF6 -->
+    <div class="page" id="page-bf6">
+      <div class="back-btn" onclick="navigate('home')"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 4l-4 4 4 4"/></svg>Back to Overview</div>
+      <div class="breadcrumb"><span>virex</span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2l4 4-4 4"/></svg><span>battlefield 6 oxide</span></div>
+      <h1 class="page-title"><span class="accent">Battlefield 6 Oxide</span></h1>
+      <p class="page-subtitle">Battlefield 6 private cheat. Aimbot, vehicle ESP, soldier ESP, and no-spread. EAC bypass with kernel driver.</p>
+      <div class="tags"><span class="tag green">EAC Bypass</span><span class="tag blue">Aimbot</span><span class="tag blue">Vehicle ESP</span><span class="tag orange">Kernel</span></div>
+      <hr>
+      <div class="callout warn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2l6 12H2z"/><path d="M8 7v3"/><circle cx="8" cy="12" r=".5" fill="currentColor" stroke="none"/></svg>BF6 Oxide is in active development. Check the status page before each session to confirm the current game version is supported.</div>
+      <h2 class="section-heading">Setup <span class="hl">Guide</span></h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Disable Secure Boot</div><div class="step-desc">BIOS → Secure Boot → Disabled. EAC kernel bypass requires this.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Whitelist & Extract</div><div class="step-desc">Add <code>C:\Virex\BF6\</code> to Defender exclusions. Extract the package there.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Run BF6Oxide.exe as Admin</div><div class="step-desc">Enter your key. The EAC bypass driver installs automatically. Wait for the "Driver Loaded" status.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Launch Battlefield 6</div><div class="step-desc">Open the game via EA App. Wait until you're in the main menu, then click Inject in the loader.</div>
+          <div class="code-label">Feature config</div>
+          <div class="code-block"><span class="key">Aimbot</span>       = ON (FOV 75, smooth 6)<br><span class="key">No Spread</span>    = ON<br><span class="key">Soldier ESP</span>  = Box + HP + Distance<br><span class="key">Vehicle ESP</span>  = Tank + Jet + Heli<br><span class="key">Explosive ESP</span>= Mines + C4 + Grenades</div>
+        </div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Join Server & Play</div><div class="step-desc">Join any game mode. Vehicle ESP is especially useful in large maps — enemy vehicles are highlighted with distance labels.</div></div></div>
+      </div>
+      <div class="callout success"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l4 4 6-6"/></svg>BF6 Oxide loaded. Enjoy the match!</div>
+      <div class="page-footer"><span>&copy; 2025 Virex.</span></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  const p=document.getElementById('page-'+page);
+  if(p){p.classList.add('active');p.scrollIntoView({block:'start',behavior:'instant'});window.scrollTo(0,0)}
+  const n=document.getElementById('nav-'+page);
+  if(n) n.classList.add('active');
+  document.title = page==='home'?'Welcome to Virex | Virex Docs':'Virex Docs — '+page;
+}
+
+// Galaxy animation
+(function(){
+  const canvas=document.getElementById('galaxy');
+  const ctx=canvas.getContext('2d');
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+  resize();window.addEventListener('resize',resize);
+  const BG=[];
+  function seedBG(){BG.length=0;for(let i=0;i<280;i++)BG.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.1+0.15,a:Math.random()*0.5+0.1,sp:Math.random()*0.018+0.004,ph:Math.random()*Math.PI*2,hue:Math.random()<0.65?205+Math.random()*35:190+Math.random()*60})}
+  seedBG();window.addEventListener('resize',seedBG);
+  const COLS=[[41,121,255],[0,212,255],[80,140,255],[120,165,255],[200,220,255],[100,90,255]];
+  function spawn(){const c=COLS[Math.floor(Math.random()*COLS.length)];const spd=Math.random()*2.8+1.0;const ang=Math.PI/2+(Math.random()-0.5)*0.35;return{x:Math.random()*canvas.width,y:Math.random()*canvas.height*0.5-50,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,len:Math.random()*90+35,w:Math.random()*1.6+0.35,a:Math.random()*0.65+0.3,r:c[0],g:c[1],b:c[2],tp:Math.random()*Math.PI*2,ts:Math.random()*0.025}}
+  const S=[];for(let i=0;i<38;i++){const s=spawn();s.y=Math.random()*canvas.height;S.push(s)}
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(const s of BG){s.ph+=s.sp;const a=s.a*(0.55+0.45*Math.sin(s.ph));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`hsla(${s.hue},80%,85%,${a})`;ctx.fill()}
+    for(const s of S){s.tp+=s.ts;const al=s.a*(0.78+0.22*Math.sin(s.tp));const ang=Math.atan2(s.vy,s.vx);const tx=s.x-Math.cos(ang)*s.len,ty=s.y-Math.sin(ang)*s.len;const g=ctx.createLinearGradient(tx,ty,s.x,s.y);g.addColorStop(0,`rgba(${s.r},${s.g},${s.b},0)`);g.addColorStop(0.65,`rgba(${s.r},${s.g},${s.b},${al*0.35})`);g.addColorStop(1,`rgba(${s.r},${s.g},${s.b},${al})`);ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(s.x,s.y);ctx.strokeStyle=g;ctx.lineWidth=s.w;ctx.lineCap='round';ctx.stroke();ctx.beginPath();ctx.arc(s.x,s.y,s.w*1.3,0,Math.PI*2);ctx.fillStyle=`rgba(${s.r},${s.g},${s.b},${al})`;ctx.fill();const gl=ctx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.w*6);gl.addColorStop(0,`rgba(${s.r},${s.g},${s.b},${al*0.35})`);gl.addColorStop(1,`rgba(${s.r},${s.g},${s.b},0)`);ctx.beginPath();ctx.arc(s.x,s.y,s.w*6,0,Math.PI*2);ctx.fillStyle=gl;ctx.fill();s.x+=s.vx;s.y+=s.vy;if(s.y>canvas.height+30||s.x>canvas.width+30||s.x<-30)Object.assign(s,spawn())}
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+</body>
+</html>
